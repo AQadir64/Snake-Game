@@ -3,6 +3,9 @@
 // Snake Game Box 
 //
 ////////////////////////////////////////////////////////
+const gameCanvas = document.getElementById('gameCanvas')
+const ctx = gameCanvas.getContext('2d')
+    
 const canvas = () => {
     const gameCanvas = document.getElementById('gameCanvas')
     const ctx = gameCanvas.getContext('2d')
@@ -29,9 +32,10 @@ let snake = [
 ]
 
 
-let dy =0
-let dx =10
-
+let dy = 0
+let dx = 10
+let foodX = 0
+let foodY = 0
 /////////////////////////////////////////////////////////
 //
 // Initial Snake 
@@ -98,7 +102,7 @@ const changeDirection = (event) => {
     }
 }
 
-document.addEventListener("keydown",changeDirection)
+document.addEventListener("keydown", changeDirection)
 
 /////////////////////////////////////////////////////////
 //
@@ -109,10 +113,42 @@ document.addEventListener("keydown",changeDirection)
 ////////////////////////////////////////////////////////
 
 const advanceSnake = () => {
-    console.log(snake)
     const head = { x: snake[0].x + dx, y: snake[0].y + dy }
     snake.unshift(head)
     snake.pop()
+}
+
+
+
+//////////////////////////////////////////////////////// 
+//
+// random food
+// 
+//////////////////////////////////////////////////////// 
+
+
+
+const random = (max) => {
+    return Math.round((Math.random() * max) / 10) * 10;
+}
+
+const createFood = () => {
+    foodX = random(gameCanvas.width - 10)
+    foodY = random(gameCanvas.height - 10)
+
+    snake.forEach((part) => {
+        const foodIsOnSnake = part.x == foodX && part.y == foodY
+        if (foodIsOnSnake) {
+            createFood()
+        }
+    })
+}
+
+const drawFood =()=> {
+    ctx.fillStyle = "red"
+    ctx.strokestyle = "darkred"
+    ctx.fillRect(foodX,foodY,10,10)
+    ctx.strokeRect(foodX,foodY,10,10)
 }
 
 
@@ -124,12 +160,20 @@ const advanceSnake = () => {
 
 const move = () => {
     setTimeout(() => {
-        advanceSnake()
         canvas()
+        drawFood()
+        advanceSnake()
         drawSnake()
         // call move again 
         move()
-    },100);
+    }, 100);
 }
+createFood()
 move()
+
+
+
+
+
+
 
