@@ -74,31 +74,19 @@ const key = (dx=10, dy=0) => {
     snake.unshift(head)
     snake.pop()
 }
+//////////////////////////////////////////////////////// 
+//
+// snake continuous movement function
+// 
+//////////////////////////////////////////////////////// 
 
+const move = () => {
 setTimeout(() => {
     key()
     canvas()
     drawSnake()
-}, 200);
-
-setTimeout(() => {
-    key()
-    canvas()
-    drawSnake()
-}, 300);
-
-setTimeout(() => {
-    key()
-    canvas()
-    drawSnake()
-}, 400);
-
-document.addEventListener('',()=>{
-    setTimeout(() => {
-        key(0,10)
-        canvas()
-        drawSnake()
-    }, 400);
-    
-})
-
+    // call move again 
+    move()
+}, 100);
+}
+move()
