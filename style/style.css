@@ -24,4 +24,24 @@ canvas {
     left: 0;
     right: 0;
     margin:auto;
-            }
+        }
+#start {
+    background-color: black;
+    color: white;
+    padding: 10px 10px 5px 5px;
+    margin: 10px;
+    border: 10px solid black;
+    text-align: center;
+    text-transform: uppercase;
+    font-family:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    position: absolute;
+    display: block;
+    top: 80%;
+    right : 50%;
+    left: 45%;
+}
+#start:hover {
+    background-color: white;
+    color: black;
+}

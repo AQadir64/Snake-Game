@@ -20,7 +20,7 @@ canvas()
 
 /////////////////////////////////////////////////////////
 //
-// Snake 
+// Global 
 //
 ////////////////////////////////////////////////////////
 
@@ -31,12 +31,12 @@ let snake = [
     { x: 120, y: 150 }
 ]
 
-
 let dy = 0
 let dx = 10
 let foodX = 0
 let foodY = 0
 let score = 0
+//let changingDirection = false;
 /////////////////////////////////////////////////////////
 //
 // Initial Snake 
@@ -78,6 +78,13 @@ const changeDirection = (event) => {
     const UP_KEY = 38
     const DOWN_KEY = 40
 
+    // if(changingDirection)
+    // {
+    //     return
+    // }
+
+    // changingDirection = true
+
     const keyPressed = event.keyCode
     const goingUp = dy === -10;
     const goingDown = dy === 10;
@@ -118,8 +125,8 @@ const advanceSnake = () => {
     snake.unshift(head)
     const didEatFood = snake[0].x == foodX && snake[0].y == foodY
     if (didEatFood) {
-        score+=10
-        
+        score += 10
+
         const GameScore = document.getElementById('score')
         GameScore.innerHTML = score
         createFood()
@@ -169,6 +176,9 @@ const drawFood = () => {
 //////////////////////////////////////////////////////// 
 
 const main = () => {
+    if (endGame()) {
+        return false
+    }
     setTimeout(() => {
         canvas()
         drawFood()
@@ -182,12 +192,30 @@ const main = () => {
 
 //////////////////////////////////////////////////////// 
 //
-// score
+// end game
 //
 //////////////////////////////////////////////////////// 
 
-main()
-createFood()
+const endGame = () => {
+    for (let i = 4; i < snake.length; i++) {
+        const didColide = snake[i].x === snake[0].x && snake[i].y === snake[0].y
+        if (didColide) {
+            return true
+        }
+    }
+    const hitLeftWall = snake[0].x < 0
+    const hitRightWall = snake[0].x > gameCanvas.width - 10
+    const hitTopWall = snake[0].y < 0
+    const hitBottomWall = snake[0].y > gameCanvas.height - 10
+    return hitBottomWall || hitLeftWall || hitRightWall || hitTopWall
+}
+
+const start = document.getElementById("start")
+start.addEventListener("click",() => {
+    main()
+    createFood()
+}
+)
 
 
 
