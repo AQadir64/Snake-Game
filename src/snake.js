@@ -29,6 +29,9 @@ let snake = [
 ]
 
 
+let dy =0
+let dx =10
+
 /////////////////////////////////////////////////////////
 //
 // Initial Snake 
@@ -39,7 +42,7 @@ const drawSnakePart = (snakePart) => {
 
     const gameCanvas = document.getElementById('gameCanvas')
     const ctx = gameCanvas.getContext('2d')
-    
+
     const snakebag = "lightgreen"
     const snakeborder = "darkgreen"
 
@@ -58,22 +61,61 @@ const drawSnake = () => {
 
 drawSnake()
 
+//////////////////////////////////////////////////////// 
+//
+// snake direction change function
+// 
+//////////////////////////////////////////////////////// 
+
+const changeDirection = (event) => {
+    const LEFT_KEY = 37
+    const RIGHT_KEY = 39
+    const UP_KEY = 38
+    const DOWN_KEY = 40
+
+    const keyPressed = event.keyCode
+    const goingUp = dy === -10;
+    const goingDown = dy === 10;
+    const goingRight = dx === 10;
+    const goingLeft = dx === -10;
+
+    if (keyPressed === LEFT_KEY && !goingRight) {
+        dx = -10
+        dy = 0
+    }
+
+    if (keyPressed === RIGHT_KEY && !goingLeft) {
+        dx = 10
+        dy = 0
+    }
+    if (keyPressed === DOWN_KEY && !goingDown) {
+        dx = 0
+        dy = 10
+    }
+    if (keyPressed === UP_KEY && !goingDown) {
+        dx = 0
+        dy = -10
+    }
+}
+
+document.addEventListener("keydown",changeDirection)
+
 /////////////////////////////////////////////////////////
 //
-// Snake move 
-// //  key to move snake 
-// // dx change in x
-// // dy chnage in y
+// advanced Snake  
+//  dx change in x
+//  dy chnage in y
 //
 ////////////////////////////////////////////////////////
 
-
-const key = (dx=10, dy=0) => {
+const advanceSnake = () => {
     console.log(snake)
     const head = { x: snake[0].x + dx, y: snake[0].y + dy }
     snake.unshift(head)
     snake.pop()
 }
+
+
 //////////////////////////////////////////////////////// 
 //
 // snake continuous movement function
@@ -81,12 +123,13 @@ const key = (dx=10, dy=0) => {
 //////////////////////////////////////////////////////// 
 
 const move = () => {
-setTimeout(() => {
-    key()
-    canvas()
-    drawSnake()
-    // call move again 
-    move()
-}, 100);
+    setTimeout(() => {
+        advanceSnake()
+        canvas()
+        drawSnake()
+        // call move again 
+        move()
+    },100);
 }
 move()
+
