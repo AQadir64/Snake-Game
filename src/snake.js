@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////
 const gameCanvas = document.getElementById('gameCanvas')
 const ctx = gameCanvas.getContext('2d')
-    
+
 const canvas = () => {
     const gameCanvas = document.getElementById('gameCanvas')
     const ctx = gameCanvas.getContext('2d')
@@ -36,6 +36,7 @@ let dy = 0
 let dx = 10
 let foodX = 0
 let foodY = 0
+let score = 0
 /////////////////////////////////////////////////////////
 //
 // Initial Snake 
@@ -115,7 +116,17 @@ document.addEventListener("keydown", changeDirection)
 const advanceSnake = () => {
     const head = { x: snake[0].x + dx, y: snake[0].y + dy }
     snake.unshift(head)
-    snake.pop()
+    const didEatFood = snake[0].x == foodX && snake[0].y == foodY
+    if (didEatFood) {
+        score+=10
+        
+        const GameScore = document.getElementById('score')
+        GameScore.innerHTML = score
+        createFood()
+    }
+    else {
+        snake.pop()
+    }
 }
 
 
@@ -144,32 +155,42 @@ const createFood = () => {
     })
 }
 
-const drawFood =()=> {
+const drawFood = () => {
     ctx.fillStyle = "red"
     ctx.strokestyle = "darkred"
-    ctx.fillRect(foodX,foodY,10,10)
-    ctx.strokeRect(foodX,foodY,10,10)
+    ctx.fillRect(foodX, foodY, 10, 10)
+    ctx.strokeRect(foodX, foodY, 10, 10)
 }
-
 
 //////////////////////////////////////////////////////// 
 //
-// snake continuous movement function
+// snake main function
 // 
 //////////////////////////////////////////////////////// 
 
-const move = () => {
+const main = () => {
     setTimeout(() => {
         canvas()
         drawFood()
         advanceSnake()
         drawSnake()
         // call move again 
-        move()
+        main()
     }, 100);
 }
+
+
+//////////////////////////////////////////////////////// 
+//
+// score
+//
+//////////////////////////////////////////////////////// 
+
+main()
 createFood()
-move()
+
+
+
 
 
 
